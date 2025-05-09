@@ -1,7 +1,7 @@
 package com.cassius.tutorialmod.Item;
 
 import com.cassius.tutorialmod.TutorialMod;
-import com.cassius.tutorialmod.entity.ModEntities;
+import com.cassius.tutorialmod.entity.ModEntitiesRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -31,8 +31,14 @@ public class ModItems {
 
     public static final Item MANTIS_SPAWN_EGG = registerItem(
             "mantis_spawn_egg",
-            new SpawnEggItem(ModEntities.MANTIS, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TutorialMod.MOD_ID, "mantis_spawn_egg"))))
+            new SpawnEggItem(ModEntitiesRegistry.MANTIS, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TutorialMod.MOD_ID, "mantis_spawn_egg"))))
     );
+
+    public static final Item PEGASUS_SPAWN_EGG = registerItem(
+            "pegasus_spawn_egg",
+            new SpawnEggItem(ModEntitiesRegistry.PEGASUS, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TutorialMod.MOD_ID, "pegasus_spawn_egg"))))
+    );
+
 
 
     //Register Item Helper Method
@@ -49,6 +55,7 @@ public class ModItems {
             entries.add(PINK_GARNET);
             entries.add(RAW_PINK_GARNET);
             entries.add(MANTIS_SPAWN_EGG);
+            entries.add(PEGASUS_SPAWN_EGG);
         });
     }
 }

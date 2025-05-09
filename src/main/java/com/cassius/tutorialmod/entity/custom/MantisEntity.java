@@ -4,7 +4,7 @@
  */
 package com.cassius.tutorialmod.entity.custom;
 
-import com.cassius.tutorialmod.entity.ModEntities;
+import com.cassius.tutorialmod.entity.ModEntitiesRegistry;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class MantisEntity extends AnimalEntity {
 
-    //MantisEntity Constructor
+    //Constructor
     public MantisEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -88,6 +88,6 @@ public class MantisEntity extends AnimalEntity {
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return ModEntities.MANTIS.create(world, SpawnReason.BREEDING);
+        return ModEntitiesRegistry.MANTIS.create(world, SpawnReason.BREEDING);
     }
 }
