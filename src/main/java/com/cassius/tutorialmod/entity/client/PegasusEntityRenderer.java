@@ -39,26 +39,26 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
     public PegasusEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new PegasusEntityModel(context.getPart(EntityModelLayers.HORSE)), new PegasusEntityModel(context.getPart(EntityModelLayers.HORSE_BABY)));
 //        this.addFeature(new HorseMarkingFeatureRenderer(this));
-//        this.addFeature(
-//                new SaddleFeatureRenderer<>(
-//                        this,
-//                        context.getEquipmentRenderer(),
-//                        EquipmentModel.LayerType.HORSE_BODY,
-//                        horseEntityRenderState -> horseEntityRenderState.armor,
-//                        new HorseEntityModel(context.getPart(EntityModelLayers.HORSE_ARMOR)),
-//                        new HorseEntityModel(context.getPart(EntityModelLayers.HORSE_ARMOR_BABY))
-//                )
-//        );
-//        this.addFeature(
-//                new SaddleFeatureRenderer<>(
-//                        this,
-//                        context.getEquipmentRenderer(),
-//                        EquipmentModel.LayerType.HORSE_SADDLE,
-//                        horseEntityRenderState -> horseEntityRenderState.saddleStack,
-//                        new HorseSaddleEntityModel(context.getPart(EntityModelLayers.HORSE_SADDLE)),
-//                        new HorseSaddleEntityModel(context.getPart(EntityModelLayers.HORSE_BABY_SADDLE))
-//                )
-//        );
+        this.addFeature(
+                new SaddleFeatureRenderer<>(
+                        this,
+                        context.getEquipmentRenderer(),
+                        EquipmentModel.LayerType.HORSE_BODY,
+                        horseEntityRenderState -> horseEntityRenderState.armor,
+                        new HorseEntityModel(context.getPart(EntityModelLayers.HORSE_ARMOR)),
+                        new HorseEntityModel(context.getPart(EntityModelLayers.HORSE_ARMOR_BABY))
+                )
+        );
+        this.addFeature(
+                new SaddleFeatureRenderer<>(
+                        this,
+                        context.getEquipmentRenderer(),
+                        EquipmentModel.LayerType.HORSE_SADDLE,
+                        horseEntityRenderState -> horseEntityRenderState.saddleStack,
+                        new HorseSaddleEntityModel(context.getPart(EntityModelLayers.HORSE_SADDLE)),
+                        new HorseSaddleEntityModel(context.getPart(EntityModelLayers.HORSE_BABY_SADDLE))
+                )
+        );
     }
 
     public Identifier getTexture(PegasusEntityRenderState pegasusEntityRenderState) {
@@ -73,6 +73,6 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
         super.updateRenderState(pegasusEntity, pegasusEntityRenderState, f);
 //        pegasusEntityRenderState.color = pegasusEntity.getHorseColor();
 //        pegasusEntityRenderState.marking = pegasusEntity.getMarking();
-//        pegasusEntityRenderState.armor = pegasusEntity.getBodyArmor().copy();
+        pegasusEntityRenderState.armor = pegasusEntity.getBodyArmor().copy();
     }
 }

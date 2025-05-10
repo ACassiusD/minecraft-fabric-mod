@@ -1,22 +1,39 @@
 package com.cassius.tutorialmod.entity.custom;
 
+import com.cassius.tutorialmod.util.JumpStateHolder;
 import com.cassius.tutorialmod.entity.ModEntitiesRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class PegasusEntity extends AbstractHorseEntity {
 
+    private static final EntityDimensions BABY_BASE_DIMENSIONS = EntityType.HORSE
+            .getDimensions()
+            .withAttachments(EntityAttachments.builder().add(EntityAttachmentType.PASSENGER, 0.0F, EntityType.HORSE.getHeight() + 0.125F, 0.0F))
+            .scaled(0.5F);
+
+    @Override
+    public EntityDimensions getBaseDimensions(EntityPose pose) {
+        return this.isBaby() ? BABY_BASE_DIMENSIONS : super.getBaseDimensions(pose);
+    }
+
     //Required Default Constructor
     public PegasusEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
     }
+
 
     //That method only modifies attributes after the entity is created,
     @Override
@@ -27,13 +44,40 @@ public class PegasusEntity extends AbstractHorseEntity {
     }
 
     @Override
-    public void tickMovement() {
-        super.tickMovement();
+    public boolean canUseSlot(EquipmentSlot slot) {
+        return true;
+    }
 
-        if (this.isFlying()) {
-            this.setVelocity(this.getVelocity().add(0, 0.08, 0)); // simple lift
+    @Override
+    public void travel(Vec3d movementInput) {
+        if (this.isAlive() && this.isTame() && this.getControllingPassenger() instanceof PlayerEntity rider) {
+            // face where the rider is looking
+            this.setRotation(rider.getYaw(), rider.getPitch() * 0.5F);
+
+            // horizontal movement
+            Vec3d horiz = new Vec3d(rider.sidewaysSpeed, 0, rider.forwardSpeed)
+                    .normalize()
+                    .multiply(this.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
+
+            // vertical: space = up, ctrl (sneak) = down
+            double vert = JumpStateHolder.isJumping(rider.getUuid())   ? 0.2
+                    : rider.isSneaking() ? -0.2
+                    : 0;
+
+            // fly
+            this.setNoGravity(true);
+            Vec3d vel = horiz.add(0, vert, 0);
+            this.setVelocity(vel);
+            this.move(MovementType.SELF, vel);
+            this.velocityModified = true;
+        } else {
+            // back to normal when not flying
+            this.setNoGravity(false);
+            super.travel(movementInput);
         }
     }
+
+
 
     private boolean isFlying() {
         return !this.isOnGround() && this.getControllingPassenger() != null && this.isTame();
@@ -51,24 +95,36 @@ public class PegasusEntity extends AbstractHorseEntity {
         return null;
     }
 
-//    @Override
-//    protected SoundEvent getAmbientSound() {
-//        return SoundEvents.ENTITY_HORSE_AMBIENT;
-//    }
-//
-//    @Override
-//    protected SoundEvent getHurtSound(DamageSource source) {
-//        return SoundEvents.ENTITY_HORSE_HURT;
-//    }
-//
-//    @Override
-//    protected SoundEvent getDeathSound() {
-//        return SoundEvents.ENTITY_HORSE_DEATH;
-//    }
-//
-//    @Override
-//    protected void playJumpSound() {
-//        this.playSound(SoundEvents.ENTITY_HORSE_JUMP, 0.4F, 1.0F);
-//    }
+    private void debugPrintTags() {
+        Registries.ENTITY_TYPE
+                .getEntry(this.getType())
+                .streamTags()
+                .forEach(tag -> System.out.println("Pegasus has tag: " + tag.id()));
 
+    }
+
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+
+        debugPrintTags(); // DEBUG: print tags on interaction
+
+        boolean bl = !this.isBaby() && this.isTame() && player.shouldCancelInteraction();
+        if (!this.hasPassengers() && !bl) {
+            ItemStack itemStack = player.getStackInHand(hand);
+            if (!itemStack.isEmpty()) {
+                if (this.isBreedingItem(itemStack)) {
+                    return this.interactHorse(player, itemStack);
+                }
+
+                if (!this.isTame()) {
+                    this.playAngrySound();
+                    return ActionResult.SUCCESS;
+                }
+            }
+
+            return super.interactMob(player, hand);
+        } else {
+            return super.interactMob(player, hand);
+        }
+    }
 }
