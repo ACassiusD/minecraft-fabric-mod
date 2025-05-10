@@ -61,7 +61,7 @@ public class PegasusEntity extends AbstractHorseEntity {
 
             // vertical: space = up, ctrl (sneak) = down
             double vert = JumpStateHolder.isJumping(rider.getUuid())   ? 0.2
-                    : rider.isSneaking() ? -0.2
+                    : JumpStateHolder.isSprinting(rider.getUuid())  ? -0.2
                     : 0;
 
             // fly

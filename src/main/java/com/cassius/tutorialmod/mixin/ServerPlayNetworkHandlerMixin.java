@@ -29,8 +29,13 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Inject(method = "onPlayerInput", at = @At("TAIL"))
     private void onPlayerInput(PlayerInputC2SPacket packet, CallbackInfo ci) {
         boolean isJumping  = packet.input().jump();
+        boolean isSneaking = packet.input().sneak();
+        boolean isSprinting = packet.input().sprint();
+        System.out.println("isSneaking = " + isSneaking + " isSprinting = " + isSprinting + " isJumping = " + isJumping);
         ServerPlayerEntity player = this.getPlayer();
         // Store value in util class, so it can be used elsewhere
         JumpStateHolder.setJumping(player.getUuid(), isJumping);
+        JumpStateHolder.setSprinting(player.getUuid(), isSprinting);
+        JumpStateHolder.setSneaking(player.getUuid(), isSneaking);
     }
 }
