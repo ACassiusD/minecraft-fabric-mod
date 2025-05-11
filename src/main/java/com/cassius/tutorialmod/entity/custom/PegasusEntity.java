@@ -9,7 +9,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
@@ -59,7 +58,6 @@ public class PegasusEntity extends AbstractHorseEntity {
         super(entityType, world);
     }
 
-
     //That method only modifies attributes after the entity is created,
     @Override
     protected void initAttributes(Random random) {
@@ -76,22 +74,14 @@ public class PegasusEntity extends AbstractHorseEntity {
     /**
      * 1. Enter flight mode as soon as you press jump.
      * 2. Exit flight mode only once you touch ground and release jump.
-     * 3. Always apply vanilla gravity when not in flight (or descend mode).
-     * 4. Swim/Lava still fall back to vanilla swim controls + one‐time hover on jump.
-     * 5. Horizontal speed is exactly twice your ground speed (you can tweak that multiplier).
-     * 6. Vertical speeds: +0.2 up, –0.2 down, –0.04 hover.
-     * 7. If touching water, flight mode turns off, gravity turns on
-     * @param movementInput represents the sidewaysSpeed, upwardSpeed, and forwardSpeed of the entity in that order
-     */
-
-    /**
-     * 1. Enter flight mode as soon as you press jump.
-     * 2. Exit flight mode only once you touch ground and release jump.
-     * 3. Toggle-off flight mid-air with quick double-tap.
-     * 4. Always apply vanilla gravity when not in flight (or descend mode).
-     * 5. Swim/Lava still fall back to vanilla swim controls + one‐time hover on jump.
-     * 6. Horizontal speed is FLIGHT_HORIZONTAL_MULT × ground speed.
-     * 7. Vertical speeds: ASCEND = +0.3, DESCEND = –0.3, HOVER = –0.04.
+     * 3. Toggle-off flight mid-air with a quick double-tap of the jump button.
+     * 4. Manual flight-off persists until you press jump again.
+     * 5. Always apply vanilla gravity when not in flight (or descend mode).
+     * 6. Swim/Lava still fall back to vanilla swim controls + one-time hover on jump.
+     * 7. Horizontal speed is FLIGHT_HORIZONTAL_MULT × ground speed.
+     * 8. Vertical speeds: ASCEND = +FLIGHT_ASCEND_VEL, DESCEND = FLIGHT_DESCEND_VEL, HOVER = FLIGHT_HOVER_GRAVITY.
+     *
+     * @param movementInput represents the sidewaysSpeed, upwardSpeed, and forwardSpeed of the entity.
      */
     @Override
     public void travel(Vec3d movementInput) {
@@ -203,14 +193,6 @@ public class PegasusEntity extends AbstractHorseEntity {
         return null;
     }
 
-    private void debugPrintTags() {
-        Registries.ENTITY_TYPE
-                .getEntry(this.getType())
-                .streamTags()
-                .forEach(tag -> System.out.println("Pegasus has tag: " + tag.id()));
-
-    }
-
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
 
@@ -234,6 +216,17 @@ public class PegasusEntity extends AbstractHorseEntity {
         } else {
             return super.interactMob(player, hand);
         }
+    }
+
+    /**
+     * Log the Tags attached to this entity
+     */
+    private void debugPrintTags() {
+        Registries.ENTITY_TYPE
+                .getEntry(this.getType())
+                .streamTags()
+                .forEach(tag -> System.out.println("Pegasus has tag: " + tag.id()));
+
     }
 
     // kill off all the vanilla jump-charge machinery
