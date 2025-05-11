@@ -7,6 +7,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
@@ -50,34 +51,77 @@ public class PegasusEntity extends AbstractHorseEntity {
 
     @Override
     public void travel(Vec3d movementInput) {
+
         if (this.isAlive() && this.isTame() && this.getControllingPassenger() instanceof PlayerEntity rider) {
-            // face where the rider is looking
+
+            // SWIM / LAVA: vanilla, plus our “hover up” on jump
+            if (this.isTouchingWater() || this.isInLava()) {
+
+                System.out.println("Touching Water = " + this.isTouchingWater() + " IsGrounded = " + this.isOnGround());
+                super.travel(movementInput);
+                if (JumpStateHolder.isJumping(rider.getUuid())) {
+                    Vec3d v = this.getVelocity();
+                    this.setVelocity(v.x, 0.2, v.z);
+                }
+                return;
+            }
+
+            System.out.println("MADE IT HERE");
+
+            // ────────────────────────────────────
+            //  FLYING / AIR MODE
+            // ────────────────────────────────────
+
+            // 1) always face where the rider is looking
             this.setRotation(rider.getYaw(), rider.getPitch() * 0.5F);
 
-            // horizontal movement
-            Vec3d horiz = new Vec3d(rider.sidewaysSpeed, 0, rider.forwardSpeed)
-                    .normalize()
-                    .multiply(this.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
+            // 2) build a forward/right pair in local space:
+            float fwdInput =  rider.forwardSpeed;   // >0 when they press “W”
+            float strInput =  rider.sidewaysSpeed;  // >0 when they press “D”
+            double speed   = this.getAttributeValue(EntityAttributes.MOVEMENT_SPEED);
 
-            // vertical: space = up, ctrl (sneak) = down
-            double vert = JumpStateHolder.isJumping(rider.getUuid())   ? 0.2
-                    : JumpStateHolder.isSprinting(rider.getUuid())  ? -0.2
+            // 3) rotate them into world‐space
+            double yawRad = Math.toRadians(rider.getYaw());
+            double sin   = Math.sin(yawRad);
+            double cos   = Math.cos(yawRad);
+
+            // forward vector (points in the direction of the horse’s nose)
+            Vec3d forwardVec = new Vec3d(-sin, 0, cos);
+            // right   vector (points 90° to the horse’s right)
+            Vec3d rightVec   = new Vec3d( cos, 0, sin);
+
+            // combine them & scale by our movement‐speed
+            Vec3d horiz = forwardVec.multiply(fwdInput * speed)
+                    .add(rightVec.multiply(strInput * speed));
+
+            // 4) vertical: jump up / sneak down
+            double vert = JumpStateHolder.isJumping(rider.getUuid())   ?  0.2
+                    : JumpStateHolder.isSprinting(rider.getUuid())                         ? -0.2
                     : 0;
 
-            // fly
+            // 5) disable gravity so we can hover/fly
             this.setNoGravity(true);
+
+            // 6) move
             Vec3d vel = horiz.add(0, vert, 0);
             this.setVelocity(vel);
             this.move(MovementType.SELF, vel);
             this.velocityModified = true;
+
         } else {
-            // back to normal when not flying
+            // not ridden (or untamed) → vanilla on‐land behavior
             this.setNoGravity(false);
             super.travel(movementInput);
         }
     }
 
 
+    // kill off all the vanilla jump-charge machinery
+    @Override public void setJumpStrength(int strength) { /* no-op */ }
+    @Override public boolean canJump()                { return false; }
+    @Override public void startJumping(int height)   { /* no-op */ }
+    @Override public void stopJumping()               { /* no-op */ }
+    @Override public void setJumping(boolean j)       { /* no-op */ }
 
     private boolean isFlying() {
         return !this.isOnGround() && this.getControllingPassenger() != null && this.isTame();
