@@ -51,65 +51,67 @@ public class PegasusEntity extends AbstractHorseEntity {
 
     @Override
     public void travel(Vec3d movementInput) {
+        System.out.println("isGrounded " + this.isOnGround() + " isTouchingWater" + this.isTouchingWater());
 
         if (this.isAlive() && this.isTame() && this.getControllingPassenger() instanceof PlayerEntity rider) {
+            // always turn off vanilla gravity
+            this.setNoGravity(true);
 
-            // SWIM / LAVA: vanilla, plus our “hover up” on jump
+            // WATER / LAVA: allow jump→boost, otherwise let vanilla swim sink you
             if (this.isTouchingWater() || this.isInLava()) {
-
-                System.out.println("Touching Water = " + this.isTouchingWater() + " IsGrounded = " + this.isOnGround());
-                super.travel(movementInput);
                 if (JumpStateHolder.isJumping(rider.getUuid())) {
                     Vec3d v = this.getVelocity();
                     this.setVelocity(v.x, 0.2, v.z);
+                    this.move(MovementType.SELF, this.getVelocity());
+                    this.velocityModified = true;
+                } else {
+                    this.setNoGravity(false);
+                    super.travel(movementInput);
                 }
                 return;
             }
 
-            System.out.println("MADE IT HERE");
+            // ─────────────────────────────────────────────────────────────────
+            //  FLYING / AIR MODE (with speed boost)
+            // ─────────────────────────────────────────────────────────────────
 
-            // ────────────────────────────────────
-            //  FLYING / AIR MODE
-            // ────────────────────────────────────
-
-            // 1) always face where the rider is looking
+            // 1) face where the rider is looking
             this.setRotation(rider.getYaw(), rider.getPitch() * 0.5F);
 
-            // 2) build a forward/right pair in local space:
-            float fwdInput =  rider.forwardSpeed;   // >0 when they press “W”
-            float strInput =  rider.sidewaysSpeed;  // >0 when they press “D”
-            double speed   = this.getAttributeValue(EntityAttributes.MOVEMENT_SPEED);
+            // 2) read raw inputs
+            float  fwd = rider.forwardSpeed;   // W/S
+            float  str = rider.sidewaysSpeed;  // A/D
 
-            // 3) rotate them into world‐space
-            double yawRad = Math.toRadians(rider.getYaw());
-            double sin   = Math.sin(yawRad);
-            double cos   = Math.cos(yawRad);
+            // 3) build world-space axes
+            double yawRad  = Math.toRadians(rider.getYaw());
+            Vec3d  forward = new Vec3d(-Math.sin(yawRad), 0, Math.cos(yawRad));
+            Vec3d  right   = new Vec3d( Math.cos(yawRad), 0, Math.sin(yawRad));
 
-            // forward vector (points in the direction of the horse’s nose)
-            Vec3d forwardVec = new Vec3d(-sin, 0, cos);
-            // right   vector (points 90° to the horse’s right)
-            Vec3d rightVec   = new Vec3d( cos, 0, sin);
+            // 4) apply your speed attribute + a boost multiplier
+            final double SPEED_MULTIPLIER = 2.5;
+            double baseSpeed = this.getAttributeValue(EntityAttributes.MOVEMENT_SPEED);
+            double spd       = baseSpeed * SPEED_MULTIPLIER;
 
-            // combine them & scale by our movement‐speed
-            Vec3d horiz = forwardVec.multiply(fwdInput * speed)
-                    .add(rightVec.multiply(strInput * speed));
+            Vec3d horiz = forward.multiply(fwd * spd)
+                    .add(right.multiply(str * spd));
 
-            // 4) vertical: jump up / sneak down
-            double vert = JumpStateHolder.isJumping(rider.getUuid())   ?  0.2
-                    : JumpStateHolder.isSprinting(rider.getUuid())                         ? -0.2
-                    : 0;
+            // 5) vertical logic unchanged
+            final double ASCEND   =  0.2;
+            final double DESCEND  = -0.2;
+            final double HOVER    = -0.04;
 
-            // 5) disable gravity so we can hover/fly
-            this.setNoGravity(true);
+            double vert = JumpStateHolder.isJumping(rider.getUuid())   ? ASCEND
+                    : JumpStateHolder.isSprinting(rider.getUuid()) ? DESCEND
+                    : HOVER;
 
-            // 6) move
+            // 6) fire off your custom velocity
             Vec3d vel = horiz.add(0, vert, 0);
             this.setVelocity(vel);
             this.move(MovementType.SELF, vel);
             this.velocityModified = true;
 
         } else {
-            // not ridden (or untamed) → vanilla on‐land behavior
+            // not ridden → vanilla land logic
             this.setNoGravity(false);
             super.travel(movementInput);
         }
