@@ -6,7 +6,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.AbstractHorseEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.state.LivingHorseEntityRenderState;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -17,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
  * Wings share the vanilla animations and are given a simple flap.
  */
 @Environment(EnvType.CLIENT)
-public class PegasusEntityModel extends AbstractHorseEntityModel<LivingHorseEntityRenderState> {
+public class PegasusEntityModel extends AbstractHorseEntityModel<PegasusEntityRenderState> {
 
     //Define the model layer for the Pegasus entity to be registered
     public static final EntityModelLayer PEGASUS_LAYER =
@@ -88,14 +87,21 @@ public class PegasusEntityModel extends AbstractHorseEntityModel<LivingHorseEnti
      * Wings will flap using a simple cosine wave tied to the horse's age (tick count).
      */
     @Override
-    public void setAngles(LivingHorseEntityRenderState state) {
+    public void setAngles(PegasusEntityRenderState state) {
         super.setAngles(state);  // Apply vanilla horse animations first
 
         // Calculate a flap angle: varies smoothly from -0.4 to +0.4 radians.
         float flap = MathHelper.cos(state.age * 0.3F) * 0.4F;
 
         // Pitch the wings up/down in opposite directions for a flapping effect
-        this.leftWing.pitch  = flap;
-        this.rightWing.pitch = -flap;
+        // only do the cosine flap if our flag is true
+        if (state.flapEnabled) {
+            leftWing.pitch  =  flap;
+            rightWing.pitch = -flap;
+        } else {
+            // reset to zero so they don’t stay stuck sideways
+            leftWing.pitch  = 0f;
+            rightWing.pitch = 0f;
+        }
     }
 }

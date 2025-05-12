@@ -12,5 +12,6 @@ public class PegasusEntityRenderState  extends LivingHorseEntityRenderState {
     public HorseColor color = HorseColor.WHITE;
     public HorseMarking marking = HorseMarking.NONE;
     public ItemStack armor = ItemStack.EMPTY;
+    public boolean flapEnabled = false;
 }
 

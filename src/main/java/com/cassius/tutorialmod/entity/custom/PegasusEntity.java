@@ -25,6 +25,10 @@ public class PegasusEntity extends AbstractHorseEntity {
     /** true as soon as we start ascending; reset only when onGround() */
     private boolean flightMode = false;
 
+    public boolean isFlightMode() {
+        return flightMode;
+    }
+
     // ───── Flight tuning ─────
     /** Horizontal speed multiplier when flying (vs. ground speed). */
     private static final double FLIGHT_HORIZONTAL_MULT = 2.0;

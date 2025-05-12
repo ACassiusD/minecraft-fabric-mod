@@ -77,10 +77,14 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
         return new PegasusEntityRenderState();
     }
 
+    @Override
     public void updateRenderState(PegasusEntity pegasusEntity, PegasusEntityRenderState pegasusEntityRenderState, float f) {
         super.updateRenderState(pegasusEntity, pegasusEntityRenderState, f);
 //        pegasusEntityRenderState.color = pegasusEntity.getHorseColor();
 //        pegasusEntityRenderState.marking = pegasusEntity.getMarking();
         pegasusEntityRenderState.armor = pegasusEntity.getBodyArmor().copy();
+
+        //Check if the pegasus is in flight mode
+        pegasusEntityRenderState.flapEnabled = pegasusEntity.isFlightMode();
     }
 }
