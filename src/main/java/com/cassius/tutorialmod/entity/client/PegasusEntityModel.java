@@ -1,107 +1,84 @@
 package com.cassius.tutorialmod.entity.client;
 
 import com.cassius.tutorialmod.TutorialMod;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.AbstractHorseEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * Defines a custom model and layer for the Pegasus entity. To be Registered in TutorialModClient.java
- *
- * Pegasus's Model is a modified version of the vanilla horse model that adds a pair of wings to the standard horse mesh.
- * Wings share the vanilla animations and are given a simple flap.
+ * Defines a new custom model for the Pegasus that was exported with BlockBench in getTexturedModelData
+ * Extends the AbstractPegasusEntityModel to get vanilla horse animations
+ * Wire the custom model parts the same way they are for vanilla horses so animations map perfectly
  */
-@Environment(EnvType.CLIENT)
-public class PegasusEntityModel extends AbstractHorseEntityModel<PegasusEntityRenderState> {
+public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntityRenderState> {
 
-    //Define the model layer for the Pegasus entity to be registered
-    public static final EntityModelLayer PEGASUS_LAYER =
-            new EntityModelLayer(Identifier.of(TutorialMod.MOD_ID, "pegasus"), "main");
+    //Define the main layer for Pegasus Model
+    public static final EntityModelLayer PEGASUS_LAYER = new EntityModelLayer(Identifier.of(TutorialMod.MOD_ID, "pegasus"), "main");
 
-    // References to the newly added wing parts in the model tree.
-    private final ModelPart leftWing;
-    private final ModelPart rightWing;
-
-    /**
-     * Constructor: takes the root model part (horse + wings) and finds our wing children by name.
-     */
+    //Constructor
     public PegasusEntityModel(ModelPart root) {
-        super(root);  // Initialize parent horse fields (body, head, legs, tail)
-        this.leftWing  = root.getChild("left_wing");   // Retrieve the left wing
-        this.rightWing = root.getChild("right_wing");  // Retrieve the right wing
+        super(root);
+        this.body = root.getChild("Body");
+        this.tail = root.getChild("TailA");
+        this.leftHindLeg = root.getChild("Leg1A");
+        this.rightHindLeg = root.getChild("Leg2A");
+        this.leftFrontLeg = root.getChild("Leg3A");
+        this.rightFrontLeg = root.getChild("Leg4A");
+        this.head = root.getChild("Head");
     }
 
-    /**
-     * Defines the model's shape and layout to be registered in TutorialModClient.java
-     * Builds the horse + wings mesh and UV layout.
-     * Called once at startup so Minecraft knows how to bake our model.
-     */
+    //Define the model shape and layout to be registered in TutorialModClient.java
     public static TexturedModelData getTexturedModelData() {
-        // Step 1: Get vanilla horse shape (body, legs, head, tail)
-        ModelData data = AbstractHorseEntityModel.getModelData(Dilation.NONE);
-        ModelPartData root = data.getRoot();
+        ModelData modelData = new ModelData();
+        ModelPartData modelPartData = modelData.getRoot();
+        ModelPartData Body = modelPartData.addChild("Body", ModelPartBuilder.create().uv(0, 32).cuboid(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 11.0F, 9.0F));
 
-        // Step 2: Define left wing as a flat cuboid
-        root.addChild(
-                "left_wing",                   // identifier for lookup in constructor
-                ModelPartBuilder.create()
-                        .uv(0, 54)                 // UV origin on a 64×64 texture
-                        .cuboid(
-                                /* x */ -1.0F, /* y */ -1.0F, /* z */  0.0F,
-                                /*  width */ 16, /* height */  1, /* depth */  8,
-                                Dilation.NONE            // no extra padding
-                        ),
-                ModelTransform.of(
-                        /* pivotX */  5.0F, /* pivotY */  5.0F, /* pivotZ */ -10.0F,
-                        /* rotX */   0,   /* rotY */   0,   /* rotZ */  0
-                )
-        );
+        ModelPartData TailA = modelPartData.addChild("TailA", ModelPartBuilder.create().uv(42, 36).cuboid(-1.5F, 0.0F, -2.0F, 3.0F, 14.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 4.0F, 11.0F, 0.5236F, 0.0F, 0.0F));
 
-        // Step 3: Mirror same shape for right wing
-        root.addChild(
-                "right_wing",
-                ModelPartBuilder.create()
-                        .uv(0, 54)
-                        .mirrored()                  // flip UVs for symmetry
-                        .cuboid(
-                                /* x */ -15.0F, /* y */ -1.0F, /* z */  0.0F,
-                                /*  width */ 16, /* height */  1, /* depth */  8,
-                                Dilation.NONE
-                        ),
-                ModelTransform.of(
-                        /* pivotX */ -5.0F, /* pivotY */  5.0F, /* pivotZ */ -10.0F,
-                        /* rotX */    0,    /* rotY */    0,    /* rotZ */    0
-                )
-        );
+        ModelPartData Leg1A = modelPartData.addChild("Leg1A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, 9.0F));
 
-        // Step 4: Return the combined horse+wing model, using a 64×64 texture
-        return TexturedModelData.of(data, /* texWidth */ 64, /* texHeight */ 64);
+        ModelPartData Leg2A = modelPartData.addChild("Leg2A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, 9.0F));
+
+        ModelPartData Leg3A = modelPartData.addChild("Leg3A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, -9.0F));
+
+        ModelPartData Leg4A = modelPartData.addChild("Leg4A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, -9.0F));
+
+        ModelPartData Head = modelPartData.addChild("Head", ModelPartBuilder.create().uv(0, 13).cuboid(-3.0F, -5.0F, -6.0F, 6.0F, 5.0F, 7.0F, new Dilation(0.0F))
+                .uv(0, 25).cuboid(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
+
+        ModelPartData Ear1 = modelPartData.addChild("Ear1", ModelPartBuilder.create().uv(19, 16).mirrored().cuboid(-0.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0873F));
+
+        ModelPartData Ear2 = modelPartData.addChild("Ear2", ModelPartBuilder.create().uv(19, 16).cuboid(-1.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, -0.0873F));
+
+        ModelPartData MuleEarL = modelPartData.addChild("MuleEarL", ModelPartBuilder.create().uv(0, 12).mirrored().cuboid(-3.0F, -22.0F, 2.99F, 2.0F, 7.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.2618F));
+
+        ModelPartData MuleEarR = modelPartData.addChild("MuleEarR", ModelPartBuilder.create().uv(0, 12).cuboid(1.0F, -22.0F, 2.99F, 2.0F, 7.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, -0.2618F));
+
+        ModelPartData Neck = modelPartData.addChild("Neck", ModelPartBuilder.create().uv(0, 35).cuboid(-2.0F, -11.0F, -3.0F, 4.0F, 12.0F, 7.0F, new Dilation(0.0F))
+                .uv(56, 36).cuboid(-1.0F, -16.0F, 4.0F, 2.0F, 16.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        ModelPartData Bag1 = modelPartData.addChild("Bag1", ModelPartBuilder.create().uv(26, 21).cuboid(-9.0F, 0.0F, 0.0F, 8.0F, 8.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(-5.0F, 3.0F, 11.0F, 0.0F, -1.5708F, 0.0F));
+
+        ModelPartData Bag2 = modelPartData.addChild("Bag2", ModelPartBuilder.create().uv(26, 21).mirrored().cuboid(1.0F, 0.0F, 0.0F, 8.0F, 8.0F, 3.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(5.0F, 3.0F, 11.0F, 0.0F, 1.5708F, 0.0F));
+
+        ModelPartData Saddle = modelPartData.addChild("Saddle", ModelPartBuilder.create().uv(26, 0).cuboid(-5.0F, 1.0F, -5.5F, 10.0F, 9.0F, 9.0F, new Dilation(0.5F)), ModelTransform.origin(0.0F, 2.0F, 2.0F));
+
+        ModelPartData SaddleMouthL = modelPartData.addChild("SaddleMouthL", ModelPartBuilder.create().uv(29, 5).cuboid(2.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        ModelPartData SaddleMouthR = modelPartData.addChild("SaddleMouthR", ModelPartBuilder.create().uv(29, 5).cuboid(-3.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        ModelPartData SaddleMouthLine = modelPartData.addChild("SaddleMouthLine", ModelPartBuilder.create().uv(32, 2).cuboid(3.1F, -10.0F, -11.5F, 0.0F, 3.0F, 16.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 7.0F, -8.0F));
+
+        ModelPartData SaddleMouthLineR = modelPartData.addChild("SaddleMouthLineR", ModelPartBuilder.create().uv(32, 2).cuboid(-3.1F, -10.0F, -11.5F, 0.0F, 3.0F, 16.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 7.0F, -8.0F));
+
+        ModelPartData HeadSaddle = modelPartData.addChild("HeadSaddle", ModelPartBuilder.create().uv(19, 0).cuboid(-2.0F, -16.0F, -5.0F, 4.0F, 5.0F, 2.0F, new Dilation(0.25F))
+                .uv(0, 0).cuboid(-3.0F, -16.0F, -3.0F, 6.0F, 5.0F, 7.0F, new Dilation(0.25F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        ModelPartData Horn = modelPartData.addChild("Horn", ModelPartBuilder.create(), ModelTransform.origin(0.0F, 24.0F, 0.0F));
+
+        ModelPartData Horn_r1 = Horn.addChild("Horn_r1", ModelPartBuilder.create().uv(7, 18).cuboid(-1.0F, -8.0F, -1.0F, 2.0F, 10.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -32.0F, -17.0F, 0.7418F, 0.0F, 0.0F));
+        return TexturedModelData.of(modelData, 64, 64);
     }
 
-    /**
-     * Called every render tick to apply rotations to parts based on entity state.
-     * Wings will flap using a simple cosine wave tied to the horse's age (tick count).
-     */
-    @Override
-    public void setAngles(PegasusEntityRenderState state) {
-        super.setAngles(state);  // Apply vanilla horse animations first
-
-        // Calculate a flap angle: varies smoothly from -0.4 to +0.4 radians.
-        float flap = MathHelper.cos(state.age * 0.3F) * 0.4F;
-
-        // Pitch the wings up/down in opposite directions for a flapping effect
-        // only do the cosine flap if our flag is true
-        if (state.flapEnabled) {
-            leftWing.pitch  =  flap;
-            rightWing.pitch = -flap;
-        } else {
-            // reset to zero so they don’t stay stuck sideways
-            leftWing.pitch  = 0f;
-            rightWing.pitch = 0f;
-        }
-    }
 }

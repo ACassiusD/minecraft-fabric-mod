@@ -1,8 +1,7 @@
 package com.cassius.tutorialmod.entity.client;
 
+import com.cassius.tutorialmod.TutorialMod;
 import com.cassius.tutorialmod.entity.custom.PegasusEntity;
-import com.google.common.collect.Maps;
-import java.util.Map;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -11,29 +10,13 @@ import net.minecraft.client.render.entity.feature.SaddleFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.HorseEntityModel;
 import net.minecraft.client.render.entity.model.HorseSaddleEntityModel;
-import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<PegasusEntity, PegasusEntityRenderState, PegasusEntityModel> {
-    private static final Map<HorseColor, Identifier> TEXTURES = Maps.newEnumMap(
-            Map.of(
-                    HorseColor.WHITE,
-                    Identifier.ofVanilla("textures/entity/horse/horse_white.png"),
-                    HorseColor.CREAMY,
-                    Identifier.ofVanilla("textures/entity/horse/horse_creamy.png"),
-                    HorseColor.CHESTNUT,
-                    Identifier.ofVanilla("textures/entity/horse/horse_chestnut.png"),
-                    HorseColor.BROWN,
-                    Identifier.ofVanilla("textures/entity/horse/horse_brown.png"),
-                    HorseColor.BLACK,
-                    Identifier.ofVanilla("textures/entity/horse/horse_black.png"),
-                    HorseColor.GRAY,
-                    Identifier.ofVanilla("textures/entity/horse/horse_gray.png"),
-                    HorseColor.DARK_BROWN,
-                    Identifier.ofVanilla("textures/entity/horse/horse_darkbrown.png")
-            )
-    );
+
+    private static final Identifier TEXTURE = Identifier.of(TutorialMod.MOD_ID, "textures/entity/pegasus/pegasus.png");
+
 
     public PegasusEntityRenderer(EntityRendererFactory.Context context) {
 
@@ -70,7 +53,7 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
     }
 
     public Identifier getTexture(PegasusEntityRenderState pegasusEntityRenderState) {
-        return (Identifier)TEXTURES.get(pegasusEntityRenderState.color);
+        return TEXTURE;
     }
 
     public PegasusEntityRenderState createRenderState() {
