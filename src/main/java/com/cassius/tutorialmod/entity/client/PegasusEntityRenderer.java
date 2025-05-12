@@ -7,7 +7,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.equipment.EquipmentModel;
-import net.minecraft.client.render.entity.feature.HorseMarkingFeatureRenderer;
 import net.minecraft.client.render.entity.feature.SaddleFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.HorseEntityModel;
@@ -37,8 +36,16 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
     );
 
     public PegasusEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new PegasusEntityModel(context.getPart(EntityModelLayers.HORSE)), new PegasusEntityModel(context.getPart(EntityModelLayers.HORSE_BABY)));
-//        this.addFeature(new HorseMarkingFeatureRenderer(this));
+
+        //Define the model to use for the entity
+        super(
+                context, //context: gives access to baked model parts, render layers, etc.
+                new PegasusEntityModel(context.getPart(PegasusEntityModel.PEGASUS_LAYER)), //the adult model
+                new PegasusEntityModel(context.getPart(PegasusEntityModel.PEGASUS_LAYER)) //the baby model
+        );
+
+        //this.addFeature(new HorseMarkingFeatureRenderer(this));
+
         this.addFeature(
                 new SaddleFeatureRenderer<>(
                         this,
@@ -49,6 +56,7 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
                         new HorseEntityModel(context.getPart(EntityModelLayers.HORSE_ARMOR_BABY))
                 )
         );
+
         this.addFeature(
                 new SaddleFeatureRenderer<>(
                         this,

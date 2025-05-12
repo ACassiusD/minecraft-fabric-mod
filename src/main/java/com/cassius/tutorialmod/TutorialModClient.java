@@ -23,6 +23,11 @@ public class TutorialModClient implements ClientModInitializer {
         //Registers the renderer used to visualize mantis entity
         EntityRendererRegistry.register(ModEntitiesRegistry.MANTIS, MantisEntityRenderer::new);
 
+        //Register custom model layer for Pegasus
+        EntityModelLayerRegistry.registerModelLayer(
+                PegasusEntityModel.PEGASUS_LAYER, // id
+                PegasusEntityModel::getTexturedModelData // how to build its geometry/UVs
+        );
 
         //Registers the main layer of the 3D model for Pegasus Entity (default layer - meaning the base model)
 //        EntityModelLayerRegistry.registerModelLayer(PegasusEntityModel.PE, PegasusEntityModel::getTexturedModelData);
