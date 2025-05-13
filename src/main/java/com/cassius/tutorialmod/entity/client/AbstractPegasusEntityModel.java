@@ -45,6 +45,13 @@ public abstract class AbstractPegasusEntityModel<T extends LivingHorseEntityRend
 
     public AbstractPegasusEntityModel(ModelPart modelPart) {
         super(modelPart);
+        this.body = modelPart.getChild(EntityModelPartNames.BODY);
+        this.head = modelPart.getChild("head_parts");
+        this.rightHindLeg = modelPart.getChild(EntityModelPartNames.RIGHT_HIND_LEG);
+        this.leftHindLeg = modelPart.getChild(EntityModelPartNames.LEFT_HIND_LEG);
+        this.rightFrontLeg = modelPart.getChild(EntityModelPartNames.RIGHT_FRONT_LEG);
+        this.leftFrontLeg = modelPart.getChild(EntityModelPartNames.LEFT_FRONT_LEG);
+        this.tail = this.body.getChild(EntityModelPartNames.TAIL);
     }
 
     public static ModelData getModelData(Dilation dilation) {
