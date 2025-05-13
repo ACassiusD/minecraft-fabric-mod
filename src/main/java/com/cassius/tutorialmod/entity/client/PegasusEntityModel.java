@@ -49,14 +49,13 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
 
         ModelPartData Head = modelPartData.addChild("Head", ModelPartBuilder.create().uv(0, 13).cuboid(-3.0F, -5.0F, -6.0F, 6.0F, 5.0F, 7.0F, new Dilation(0.0F))
                 .uv(0, 25).cuboid(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new Dilation(0.0F))
-                .uv(38, 17).cuboid(-1.0F, -17.0F, -4.0F, 2.0F, 12.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
+                .uv(38, 17).cuboid(-1.0F, -17.0F, -4.0F, 2.0F, 12.0F, 3.0F, new Dilation(0.0F))
+                .uv(0, 35).cuboid(-2.0F, 0.0F, -5.0F, 4.0F, 12.0F, 7.0F, new Dilation(0.0F))
+                .uv(56, 36).cuboid(-1.0F, -5.0F, 1.0F, 2.0F, 16.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
 
         ModelPartData Ear1 = modelPartData.addChild("Ear1", ModelPartBuilder.create().uv(19, 16).mirrored().cuboid(-0.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0873F));
 
         ModelPartData Ear2 = modelPartData.addChild("Ear2", ModelPartBuilder.create().uv(19, 16).cuboid(-1.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, -0.0873F));
-
-        ModelPartData Neck = modelPartData.addChild("Neck", ModelPartBuilder.create().uv(0, 35).cuboid(-2.0F, -11.0F, -3.0F, 4.0F, 12.0F, 7.0F, new Dilation(0.0F))
-                .uv(56, 36).cuboid(-1.0F, -16.0F, 4.0F, 2.0F, 16.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
 
         /**
          * This line of code is important. It scales the model the same way the vanilla horse model is scaled.
@@ -67,5 +66,8 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
         return TexturedModelData.of(modelData, 64, 64).transform(modelTransformer);
     }
 
+
 }
+
+
 
