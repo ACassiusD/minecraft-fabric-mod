@@ -17,7 +17,6 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
 
     private static final Identifier TEXTURE = Identifier.of(TutorialMod.MOD_ID, "textures/entity/pegasus/pegasus_wings.png");
 
-
     public PegasusEntityRenderer(EntityRendererFactory.Context context) {
 
         //Define the model to use for the entity
@@ -63,11 +62,7 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
     @Override
     public void updateRenderState(PegasusEntity pegasusEntity, PegasusEntityRenderState pegasusEntityRenderState, float f) {
         super.updateRenderState(pegasusEntity, pegasusEntityRenderState, f);
-//        pegasusEntityRenderState.color = pegasusEntity.getHorseColor();
-//        pegasusEntityRenderState.marking = pegasusEntity.getMarking();
         pegasusEntityRenderState.armor = pegasusEntity.getBodyArmor().copy();
-
-        //Check if the pegasus is in flight mode
         pegasusEntityRenderState.flapEnabled = pegasusEntity.isFlightMode();
     }
 }
