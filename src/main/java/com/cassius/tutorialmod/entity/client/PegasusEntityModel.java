@@ -122,31 +122,29 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
         super.setAngles(state);
 
         if (!state.flapEnabled) {
-            leftWing .roll = 0f;
-            rightWing.roll = 0f;
+            leftWing .roll = rightWing.roll = 0f;
         } else {
-            // ─── tweakable stroke timings ───────────────────────
-            float downTicks = 25f;
-            float upTicks   = 5f;   // 4× longer → 1/4 speed
+            // ─── timings ────────────────────────────────────────
+            float downTicks = 35f;
+            float upTicks   =  6f;
             float cycleLen  = downTicks + upTicks;
-            float maxRoll   = (float)Math.toRadians(30); // wing angle
-            float ageTicks  = state.age % cycleLen;
+            // ─── asymmetrical amplitudes ────────────────────────
+            float maxDown = (float)Math.toRadians(30);  // how far down
+            float maxUp   = (float)Math.toRadians(45);  // how far up
+            // ─── compute position in [0,cycleLen) ──────────────
+            float t = state.age % cycleLen;
             float stroke;
-
-            if (ageTicks < downTicks) {
-                // down‐stroke: 0 → –maxRoll
-                float frac = ageTicks / downTicks;
-                System.out.printf("[wing] phase=down  t=%.2f/%.2f frac=%.2f%n", ageTicks, downTicks, frac);
-                stroke = -maxRoll * frac;
+            if (t < downTicks) {
+                // from +maxUp → –maxDown
+                float f = t / downTicks;
+                stroke = maxUp + ( -maxDown - maxUp ) * f;
             } else {
-                // up‐stroke: –maxRoll → 0
-                float phaseTicks = ageTicks - downTicks;
-                float frac       = phaseTicks / upTicks;
-                System.out.printf("[wing] phase=up    t=%.2f/%.2f frac=%.2f%n", phaseTicks, upTicks, frac);
-                stroke = -maxRoll * (1f - frac);
+                // from –maxDown → +maxUp
+                float f = (t - downTicks) / upTicks;
+                stroke = -maxDown + ( maxUp + maxDown ) * f;
             }
 
-            leftWing .roll = stroke;
+            leftWing .roll =  stroke;
             rightWing.roll = -stroke;
         }
 
@@ -154,6 +152,7 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
         leftWing .pitch = rightWing.pitch = 0f;
         leftWing .yaw   = rightWing.yaw   = 0f;
     }
+
 
 
 }
