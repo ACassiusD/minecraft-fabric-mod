@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<PegasusEntity, PegasusEntityRenderState, PegasusEntityModel> {
 
-    private static final Identifier TEXTURE = Identifier.of(TutorialMod.MOD_ID, "textures/entity/pegasus/pegasus_64.png");
+    private static final Identifier TEXTURE = Identifier.of(TutorialMod.MOD_ID, "textures/entity/pegasus/pegasus_wings.png");
 
 
     public PegasusEntityRenderer(EntityRendererFactory.Context context) {
