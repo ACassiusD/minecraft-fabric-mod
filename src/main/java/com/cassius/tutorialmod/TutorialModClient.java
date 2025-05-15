@@ -34,5 +34,6 @@ public class TutorialModClient implements ClientModInitializer {
 
         //Registers the renderer to use for pegasus entity
         EntityRendererRegistry.register(ModEntitiesRegistry.PEGASUS, PegasusEntityRenderer::new);
+
     }
 }

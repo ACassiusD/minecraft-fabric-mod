@@ -3,6 +3,7 @@ package com.cassius.tutorialmod.entity.custom;
 import com.cassius.tutorialmod.util.JumpStateHolder;
 import com.cassius.tutorialmod.entity.ModEntitiesRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -10,6 +11,7 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
@@ -133,7 +135,7 @@ public class PegasusEntity extends AbstractHorseEntity {
             }
             // only auto–enter flight when you press Jump if you haven't double‐tapped off
             if (jumpPressed && !manualFlightOff) {
-                 flightMode = true;
+                 enableFlightMode();
             }
 
             boolean descending = JumpStateHolder.isSprinting(rider.getUuid());
@@ -163,9 +165,6 @@ public class PegasusEntity extends AbstractHorseEntity {
                 double vert = jumpPressed
                         ? FLIGHT_ASCEND_VEL
                         : (descending ? FLIGHT_DESCEND_VEL : FLIGHT_HOVER_GRAVITY);
-
-                // 6) disable vanilla gravity
-                this.setNoGravity(true);
 
                 // 7) apply
                 Vec3d vel = horiz.add(0, vert, 0);
@@ -233,17 +232,6 @@ public class PegasusEntity extends AbstractHorseEntity {
         }
     }
 
-    /**
-     * Log the Tags attached to this entity
-     */
-    private void debugPrintTags() {
-        Registries.ENTITY_TYPE
-                .getEntry(this.getType())
-                .streamTags()
-                .forEach(tag -> System.out.println("Pegasus has tag: " + tag.id()));
-
-    }
-
     // kill off all the vanilla jump-charge machinery
     @Override public void setJumpStrength(int strength) { /* no-op */ }
     @Override public boolean canJump()                { return false; }
@@ -275,4 +263,60 @@ public class PegasusEntity extends AbstractHorseEntity {
                 && !JumpStateHolder.isJumping(rider.getUuid());
     }
 
+    /**
+     * Enable flight mode and spawn a large number of cloud particles to simulate under the Pegasus.
+     */
+    public void enableFlightMode(){
+        // only spawn particles when we first enter flight mode
+        if(!flightMode) {
+            spawnCloudParticles();
+        }
+
+        flightMode = true;
+        this.setNoGravity(true);
+    }
+
+    /**
+     * Log the Tags attached to this entity
+     */
+    private void debugPrintTags() {
+        Registries.ENTITY_TYPE
+                .getEntry(this.getType())
+                .streamTags()
+                .forEach(tag -> System.out.println("Pegasus has tag: " + tag.id()));
+
+    }
+
+    /**
+     * Spawn a large number of cloud particles under the Pegasus.
+     */
+    private void spawnCloudParticles() {
+        for (int i = 0; i < 150; i++) {
+            // local‐space offsets
+            double localX = this.random.nextGaussian() * 0.5;  // right/left
+            double localY = this.random.nextGaussian() * 0.8;  // up/down
+            double localZ = this.random.nextGaussian() * 0.8;    // forward/back
+
+            // convert yaw to radians
+            float yawRad = (float) Math.toRadians(this.getYaw());
+            double sinYaw = Math.sin(yawRad);
+            double cosYaw = Math.cos(yawRad);
+
+            // rotate local XZ by entity yaw
+            double dx =  localX * cosYaw - localZ * sinYaw;
+            double dz =  localX * sinYaw + localZ * cosYaw;
+            double dy =  localY;
+
+            // world position under feet
+            double x = this.getX() + dx;
+            double y = this.getBoundingBox().minY + 0.1 + dy;
+            double z = this.getZ() + dz;
+
+            this.getWorld().addParticleClient(
+                    ParticleTypes.CLOUD,
+                    x, y, z,
+                    0.0, 0.1, 0.0
+            );
+        }
+    }
 }
