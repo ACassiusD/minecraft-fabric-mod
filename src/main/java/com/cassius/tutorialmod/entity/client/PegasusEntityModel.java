@@ -42,33 +42,33 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-        ModelPartData Body = modelPartData.addChild("Body", ModelPartBuilder.create().uv(0, 32).cuboid(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 11.0F, 9.0F));
+        ModelPartData Body = modelPartData.addChild("Body", ModelPartBuilder.create().uv(0, 32).cuboid(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 11.0F, 9.0F));
 
-        ModelPartData Wings = modelPartData.addChild("Wings", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 11.0F, 9.0F));
+        ModelPartData Wings = modelPartData.addChild("Wings", ModelPartBuilder.create(), ModelTransform.origin(0.0F, 11.0F, 9.0F));
 
-        ModelPartData Wing3 = Wings.addChild("Wing3", ModelPartBuilder.create().uv(19, 45).mirrored().cuboid(5.0F, -8.0F, -19.0F, 5.0F, 2.0F, 10.0F, new Dilation(0.0F)).mirrored(false)
-                .uv(25, 53).mirrored().cuboid(5.0F, -8.0F, -19.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+        ModelPartData Wing3 = Wings.addChild("Wing3", ModelPartBuilder.create().uv(19, 45).mirrored().cuboid(-1.0F, -7.0F, -20.0F, 11.0F, 2.0F, 10.0F, new Dilation(0.0F)).mirrored(false)
+                .uv(25, 53).mirrored().cuboid(5.0F, -7.0F, -20.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(1.0F, -1.0F, 0.0F));
 
-        ModelPartData Wing114_r1 = Wing3.addChild("Wing114_r1", ModelPartBuilder.create().uv(20, 53).mirrored().cuboid(-4.5F, -21.0F, -11.0F, 10.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(20.0F, 13.0F, -13.0F, 0.0F, 0.7418F, 0.0F));
+        ModelPartData Wing114_r1 = Wing3.addChild("Wing114_r1", ModelPartBuilder.create().uv(20, 53).mirrored().cuboid(-4.5F, -21.0F, -11.0F, 10.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(20.0F, 13.0F, -14.0F, 0.0F, 0.7418F, 0.0F));
 
-        ModelPartData Wing113_r1 = Wing3.addChild("Wing113_r1", ModelPartBuilder.create().uv(6, 53).mirrored().cuboid(-5.0F, -21.0F, -11.0F, 24.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(24.0F, 13.0F, -15.0F, 0.0F, 0.1745F, 0.0F));
+        ModelPartData Wing113_r1 = Wing3.addChild("Wing113_r1", ModelPartBuilder.create().uv(6, 53).mirrored().cuboid(-5.0F, -21.0F, -11.0F, 24.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(24.0F, 13.0F, -16.0F, 0.0F, 0.1745F, 0.0F));
 
-        ModelPartData Wing111_r1 = Wing3.addChild("Wing111_r1", ModelPartBuilder.create().uv(26, 50).mirrored().cuboid(-8.0F, -21.0F, -13.0F, 4.0F, 2.0F, 5.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(47.0F, 13.0F, -16.0F, 0.0F, 0.1745F, 0.0F));
+        ModelPartData Wing111_r1 = Wing3.addChild("Wing111_r1", ModelPartBuilder.create().uv(26, 50).mirrored().cuboid(-8.0F, -21.0F, -13.0F, 4.0F, 2.0F, 5.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(47.0F, 13.0F, -17.0F, 0.0F, 0.1745F, 0.0F));
 
-        ModelPartData Wing110_r1 = Wing3.addChild("Wing110_r1", ModelPartBuilder.create().uv(16, 44).mirrored().cuboid(-5.0F, -21.0F, -13.0F, 5.0F, 2.0F, 11.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(40.0F, 13.0F, -15.0F, 0.0F, 0.2182F, 0.0F));
+        ModelPartData Wing110_r1 = Wing3.addChild("Wing110_r1", ModelPartBuilder.create().uv(16, 44).mirrored().cuboid(-5.0F, -21.0F, -13.0F, 5.0F, 2.0F, 11.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(40.0F, 13.0F, -16.0F, 0.0F, 0.2182F, 0.0F));
 
-        ModelPartData Wing19_r1 = Wing3.addChild("Wing19_r1", ModelPartBuilder.create().uv(12, 41).mirrored().cuboid(-7.0F, -21.0F, -14.5F, 8.0F, 2.0F, 14.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(35.0F, 13.0F, -13.0F, 0.0F, 0.2182F, 0.0F));
+        ModelPartData Wing19_r1 = Wing3.addChild("Wing19_r1", ModelPartBuilder.create().uv(12, 41).mirrored().cuboid(-7.0F, -21.0F, -14.5F, 8.0F, 2.0F, 14.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(35.0F, 13.0F, -14.0F, 0.0F, 0.2182F, 0.0F));
 
-        ModelPartData Wing18_r1 = Wing3.addChild("Wing18_r1", ModelPartBuilder.create().uv(9, 38).mirrored().cuboid(-6.0F, -21.0F, -13.5F, 7.0F, 2.0F, 17.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(29.0F, 13.0F, -13.0F, 0.0F, 0.2182F, 0.0F));
+        ModelPartData Wing18_r1 = Wing3.addChild("Wing18_r1", ModelPartBuilder.create().uv(9, 38).mirrored().cuboid(-6.0F, -21.0F, -13.5F, 7.0F, 2.0F, 17.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(29.0F, 13.0F, -14.0F, 0.0F, 0.2182F, 0.0F));
 
-        ModelPartData Wing121_r1 = Wing3.addChild("Wing121_r1", ModelPartBuilder.create().uv(8, 36).mirrored().cuboid(-6.0F, -21.0F, -12.5F, 6.0F, 2.0F, 19.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(24.0F, 13.0F, -13.0F, 0.0F, 0.3054F, 0.0F));
+        ModelPartData Wing121_r1 = Wing3.addChild("Wing121_r1", ModelPartBuilder.create().uv(8, 36).mirrored().cuboid(-6.0F, -21.0F, -12.5F, 6.0F, 2.0F, 19.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(24.0F, 13.0F, -14.0F, 0.0F, 0.3054F, 0.0F));
 
-        ModelPartData Wing17_r1 = Wing3.addChild("Wing17_r1", ModelPartBuilder.create().uv(14, 41).mirrored().cuboid(-5.0F, -21.0F, -9.0F, 4.0F, 2.0F, 14.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(19.0F, 13.0F, -13.0F, 0.0F, 0.3054F, 0.0F));
+        ModelPartData Wing17_r1 = Wing3.addChild("Wing17_r1", ModelPartBuilder.create().uv(14, 41).mirrored().cuboid(-5.0F, -21.0F, -9.0F, 4.0F, 2.0F, 14.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(19.0F, 13.0F, -14.0F, 0.0F, 0.3054F, 0.0F));
 
-        ModelPartData Wing16_r1 = Wing3.addChild("Wing16_r1", ModelPartBuilder.create().uv(16, 44).mirrored().cuboid(-6.0F, -21.0F, -9.0F, 6.0F, 2.0F, 11.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(15.0F, 13.0F, -10.0F, 0.0F, 0.1745F, 0.0F));
+        ModelPartData Wing16_r1 = Wing3.addChild("Wing16_r1", ModelPartBuilder.create().uv(16, 44).mirrored().cuboid(-6.0F, -21.0F, -9.0F, 6.0F, 2.0F, 11.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(15.0F, 13.0F, -11.0F, 0.0F, 0.1745F, 0.0F));
 
-        ModelPartData Wing2 = Wings.addChild("Wing2", ModelPartBuilder.create().uv(19, 45).cuboid(-10.0F, -8.0F, -20.0F, 5.0F, 2.0F, 10.0F, new Dilation(0.0F))
-                .uv(25, 53).cuboid(-10.0F, -8.0F, -20.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 1.0F));
+        ModelPartData Wing2 = Wings.addChild("Wing2", ModelPartBuilder.create().uv(19, 45).cuboid(-10.0F, -7.0F, -20.0F, 11.0F, 2.0F, 10.0F, new Dilation(0.0F))
+                .uv(25, 53).cuboid(-10.0F, -7.0F, -20.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.origin(-1.0F, -1.0F, 0.0F));
 
         ModelPartData Wing114_r2 = Wing2.addChild("Wing114_r2", ModelPartBuilder.create().uv(20, 53).cuboid(-5.5F, -21.0F, -11.0F, 10.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-20.0F, 13.0F, -14.0F, 0.0F, -0.7418F, 0.0F));
 
@@ -90,13 +90,13 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
 
         ModelPartData TailA = modelPartData.addChild("TailA", ModelPartBuilder.create().uv(42, 36).cuboid(-1.5F, 0.0F, -2.0F, 3.0F, 14.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 4.0F, 11.0F, 0.5236F, 0.0F, 0.0F));
 
-        ModelPartData Leg1A = modelPartData.addChild("Leg1A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(3.0F, 13.0F, 9.0F));
+        ModelPartData Leg1A = modelPartData.addChild("Leg1A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, 9.0F));
 
-        ModelPartData Leg2A = modelPartData.addChild("Leg2A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(-3.0F, 13.0F, 9.0F));
+        ModelPartData Leg2A = modelPartData.addChild("Leg2A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, 9.0F));
 
-        ModelPartData Leg3A = modelPartData.addChild("Leg3A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(3.0F, 13.0F, -9.0F));
+        ModelPartData Leg3A = modelPartData.addChild("Leg3A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, -9.0F));
 
-        ModelPartData Leg4A = modelPartData.addChild("Leg4A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(-3.0F, 13.0F, -9.0F));
+        ModelPartData Leg4A = modelPartData.addChild("Leg4A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, -9.0F));
 
         ModelPartData Head = modelPartData.addChild("Head", ModelPartBuilder.create().uv(0, 13).cuboid(-3.0F, -5.0F, -6.0F, 6.0F, 5.0F, 7.0F, new Dilation(0.0F))
                 .uv(0, 25).cuboid(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new Dilation(0.0F))
@@ -161,6 +161,10 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
 
 
 }
+
+
+
+
 
 
 
