@@ -185,6 +185,17 @@ public class PegasusEntity extends AbstractHorseEntity {
         }
     }
 
+    @Override
+    public void removePassenger(Entity passenger) {
+        super.removePassenger(passenger);
+        if (passenger instanceof PlayerEntity) {
+            // reset flight when player dismounts
+            flightMode = false;
+            manualFlightOff = false;
+            this.setNoGravity(false);
+        }
+    }
+
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity otherParentEntity) {
