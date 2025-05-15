@@ -90,9 +90,9 @@ public class PegasusEntity extends AbstractHorseEntity {
     @Override
     public void travel(Vec3d movementInput) {
         // debug
-        System.out.println("isGrounded=" + this.isOnGround()
-                + " isTouchingWater=" + this.isTouchingWater()
-                + " flightMode=" + flightMode);
+//        System.out.println("isGrounded=" + this.isOnGround()
+//                + " isTouchingWater=" + this.isTouchingWater()
+//                + " flightMode=" + flightMode);
 
         if (this.isAlive() && this.isTame() &&
                 this.getControllingPassenger() instanceof PlayerEntity rider) {
@@ -133,7 +133,7 @@ public class PegasusEntity extends AbstractHorseEntity {
             }
             // only auto–enter flight when you press Jump if you haven't double‐tapped off
             if (jumpPressed && !manualFlightOff) {
-                flightMode = true;
+                 flightMode = true;
             }
 
             boolean descending = JumpStateHolder.isSprinting(rider.getUuid());
