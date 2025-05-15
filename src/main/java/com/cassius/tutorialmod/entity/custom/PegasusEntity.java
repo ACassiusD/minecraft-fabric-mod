@@ -261,4 +261,18 @@ public class PegasusEntity extends AbstractHorseEntity {
         // do nothing
     }
 
+    /**
+     * Idle = on ground, not in flight, and rider isn’t moving or jumping.
+     */
+    public boolean isIdle() {
+        if (!this.isOnGround() || this.flightMode) return false;
+        Entity passenger = this.getControllingPassenger();
+        if (!(passenger instanceof PlayerEntity rider)) return true;  // no rider = idle
+        // rider.forwardSpeed & sidewaysSpeed are zero when they’re not pushing WASD,
+        // and our JumpStateHolder tells us if they’re holding space.
+        return rider.forwardSpeed  == 0
+                && rider.sidewaysSpeed == 0
+                && !JumpStateHolder.isJumping(rider.getUuid());
+    }
+
 }

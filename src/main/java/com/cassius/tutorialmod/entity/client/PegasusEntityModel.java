@@ -21,6 +21,7 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
    public  ModelPart leftWing;
    public  ModelPart rightWing;
 
+
     //Constructor
     public PegasusEntityModel(ModelPart root) {
         super(root);
@@ -41,12 +42,12 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-        ModelPartData Body = modelPartData.addChild("Body", ModelPartBuilder.create().uv(0, 32).cuboid(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 11.0F, 9.0F));
+        ModelPartData Body = modelPartData.addChild("Body", ModelPartBuilder.create().uv(0, 32).cuboid(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 11.0F, 9.0F));
 
-        ModelPartData Wings = modelPartData.addChild("Wings", ModelPartBuilder.create(), ModelTransform.origin(0.0F, 11.0F, 9.0F));
+        ModelPartData Wings = modelPartData.addChild("Wings", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 11.0F, 9.0F));
 
         ModelPartData Wing3 = Wings.addChild("Wing3", ModelPartBuilder.create().uv(19, 45).mirrored().cuboid(5.0F, -8.0F, -19.0F, 5.0F, 2.0F, 10.0F, new Dilation(0.0F)).mirrored(false)
-                .uv(25, 53).mirrored().cuboid(5.0F, -8.0F, -19.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(0.0F, 0.0F, 0.0F));
+                .uv(25, 53).mirrored().cuboid(5.0F, -8.0F, -19.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
 
         ModelPartData Wing114_r1 = Wing3.addChild("Wing114_r1", ModelPartBuilder.create().uv(20, 53).mirrored().cuboid(-4.5F, -21.0F, -11.0F, 10.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(20.0F, 13.0F, -13.0F, 0.0F, 0.7418F, 0.0F));
 
@@ -67,7 +68,7 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
         ModelPartData Wing16_r1 = Wing3.addChild("Wing16_r1", ModelPartBuilder.create().uv(16, 44).mirrored().cuboid(-6.0F, -21.0F, -9.0F, 6.0F, 2.0F, 11.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(15.0F, 13.0F, -10.0F, 0.0F, 0.1745F, 0.0F));
 
         ModelPartData Wing2 = Wings.addChild("Wing2", ModelPartBuilder.create().uv(19, 45).cuboid(-10.0F, -8.0F, -20.0F, 5.0F, 2.0F, 10.0F, new Dilation(0.0F))
-                .uv(25, 53).cuboid(-10.0F, -8.0F, -20.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 0.0F, 1.0F));
+                .uv(25, 53).cuboid(-10.0F, -8.0F, -20.0F, 5.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 1.0F));
 
         ModelPartData Wing114_r2 = Wing2.addChild("Wing114_r2", ModelPartBuilder.create().uv(20, 53).cuboid(-5.5F, -21.0F, -11.0F, 10.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-20.0F, 13.0F, -14.0F, 0.0F, -0.7418F, 0.0F));
 
@@ -89,25 +90,21 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
 
         ModelPartData TailA = modelPartData.addChild("TailA", ModelPartBuilder.create().uv(42, 36).cuboid(-1.5F, 0.0F, -2.0F, 3.0F, 14.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 4.0F, 11.0F, 0.5236F, 0.0F, 0.0F));
 
-        ModelPartData Leg1A = modelPartData.addChild("Leg1A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, 9.0F));
+        ModelPartData Leg1A = modelPartData.addChild("Leg1A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(3.0F, 13.0F, 9.0F));
 
-        ModelPartData Leg2A = modelPartData.addChild("Leg2A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, 9.0F));
+        ModelPartData Leg2A = modelPartData.addChild("Leg2A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(-3.0F, 13.0F, 9.0F));
 
-        ModelPartData Leg3A = modelPartData.addChild("Leg3A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.origin(3.0F, 13.0F, -9.0F));
+        ModelPartData Leg3A = modelPartData.addChild("Leg3A", ModelPartBuilder.create().uv(48, 21).mirrored().cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.pivot(3.0F, 13.0F, -9.0F));
 
-        ModelPartData Leg4A = modelPartData.addChild("Leg4A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 13.0F, -9.0F));
+        ModelPartData Leg4A = modelPartData.addChild("Leg4A", ModelPartBuilder.create().uv(48, 21).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(-3.0F, 13.0F, -9.0F));
 
         ModelPartData Head = modelPartData.addChild("Head", ModelPartBuilder.create().uv(0, 13).cuboid(-3.0F, -5.0F, -6.0F, 6.0F, 5.0F, 7.0F, new Dilation(0.0F))
-                .uv(0, 25).cuboid(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
-
-        ModelPartData Horn = modelPartData.addChild("Horn", ModelPartBuilder.create().uv(32, 1).cuboid(-1.0F, -24.0F, -4.0F, 2.0F, 19.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
-
-        ModelPartData Ear1 = modelPartData.addChild("Ear1", ModelPartBuilder.create().uv(19, 16).mirrored().cuboid(-0.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0873F));
-
-        ModelPartData Ear2 = modelPartData.addChild("Ear2", ModelPartBuilder.create().uv(19, 16).cuboid(-1.5F, -18.0F, 2.99F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, -0.0873F));
-
-        ModelPartData Neck = modelPartData.addChild("Neck", ModelPartBuilder.create().uv(0, 35).cuboid(-2.0F, -11.0F, -3.0F, 4.0F, 12.0F, 7.0F, new Dilation(0.0F))
-                .uv(56, 36).cuboid(-1.0F, -16.0F, 4.0F, 2.0F, 16.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 7.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+                .uv(0, 25).cuboid(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new Dilation(0.0F))
+                .uv(32, 1).cuboid(-1.0F, -24.0F, -4.0F, 2.0F, 19.0F, 2.0F, new Dilation(0.0F))
+                .uv(0, 35).cuboid(-2.0F, 0.0F, -6.0F, 4.0F, 12.0F, 7.0F, new Dilation(0.0F))
+                .uv(56, 36).cuboid(-1.0F, -5.0F, 1.0F, 2.0F, 16.0F, 2.0F, new Dilation(0.0F))
+                .uv(19, 16).mirrored().cuboid(0.5F, -7.0F, -0.01F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)).mirrored(false)
+                .uv(19, 16).cuboid(-2.5F, -7.0F, -0.01F, 2.0F, 3.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -4.0F, -11.0F, 0.5236F, 0.0F, 0.0F));
         /**
          * This line of code is important. It scales the model the same way the vanilla horse model is scaled.
          * Check net/minecraft/client/render/entity/model/EntityModels.java HORSE Registration for reference
@@ -121,8 +118,16 @@ public class PegasusEntityModel extends AbstractPegasusEntityModel<PegasusEntity
     public void setAngles(PegasusEntityRenderState state) {
         super.setAngles(state);
 
+//        if (state.isIdle) {
+//
+//        }
+
         if (!state.flapEnabled) {
-            leftWing .roll = rightWing.roll = 0f;
+//            leftWing .roll = rightWing.roll = 0f;
+            // static at 45° down
+            float idleAngle = (float) Math.toRadians(45);
+            leftWing.roll  = idleAngle;
+            rightWing.roll =  -idleAngle;
         } else {
             // ─── timings ────────────────────────────────────────
             float downTicks = 35f;
