@@ -1,0 +1,10 @@
+accessWidener v2 named
+
+# make SkeletonHorseEntity subclassable
+extendable class   net/minecraft/entity/mob/SkeletonHorseEntity
+
+# make AbstractHorseEntity.canBreed() public
+accessible method  net/minecraft/entity/passive/AbstractHorseEntity  canBreed  ()Z
+
+# (optional) allow overwrite of canBreedWith on SkeletonHorseEntity
+#extendable method  net/minecraft/entity/mob/SkeletonHorseEntity  canBreedWith  (Lnet/minecraft/entity/passive/AnimalEntity;)Z

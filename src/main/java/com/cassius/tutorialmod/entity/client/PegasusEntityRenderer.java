@@ -66,7 +66,6 @@ public final class PegasusEntityRenderer extends AbstractPegasusEntityRenderer<P
         pegasusEntityRenderState.armor = pegasusEntity.getBodyArmor().copy();
 //        boolean hasRider       = pegasusEntity.getControllingPassenger() instanceof PlayerEntity;
 //        boolean airborneWithRider = !e.isOnGround() && !hasRider;
-        System.out.println("fallDistance=" + pegasusEntity.fallDistance);
         pegasusEntityRenderState.flapEnabled = pegasusEntity.isFlightMode() || pegasusEntity.fallDistance > 2.0F;
         pegasusEntityRenderState.isIdle = pegasusEntity.isIdle();
     }
